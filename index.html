@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dr. Drive — City Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game-canvas"></canvas>
+      <div id="crash-flash" class="crash-flash hidden"></div>
+      <div id="crash-banner" class="crash-banner hidden">💥 COLLISION!</div>
+
+      <!-- Start / menu -->
+      <div id="menu" class="overlay">
+        <div class="menu-card">
+          <p class="brand">DR. DRIVE</p>
+          <h1>City Driving</h1>
+          <p class="tagline">Drive to a named city area. Obey traffic. Don’t crash.</p>
+          <button id="btn-start" class="primary-btn">START DRIVE</button>
+          <div class="controls-help">
+            <div><kbd>↑ / W</kbd> Accelerate (straight)</div>
+            <div><kbd>← →</kbd> Steer left / right</div>
+            <div><kbd>↓ / S</kbd> Brake</div>
+            <div><kbd>Wheel</kbd> Drag to steer</div>
+            <div><kbd>Q E</kbd> Shift gears</div>
+            <div><kbd>1–5</kbd> Select gear</div>
+            <div><kbd>C</kbd> Camera</div>
+            <div><kbd>Space</kbd> Handbrake</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- In-game HUD -->
+      <div id="hud" class="hidden">
+        <div class="hud-top">
+          <div class="hud-left">
+            <button id="btn-camera" class="icon-btn" title="Change camera">📷</button>
+            <div class="timer-panel">
+              <span class="label">TIME</span>
+              <span id="timer">00:00</span>
+            </div>
+            <div id="places-panel" class="places-panel">
+              <div class="places-head">CITY PLACES</div>
+              <ul id="places-list"></ul>
+            </div>
+          </div>
+          <div class="hud-center">
+            <canvas id="minimap" width="148" height="148" aria-label="Mini map"></canvas>
+            <div class="nav-info">
+              <div id="nav-arrow">⬆</div>
+              <div id="distance">0 m</div>
+              <div id="place-chip">MISSION</div>
+              <div id="mission-text">Drive to the city area</div>
+            </div>
+          </div>
+          <div class="hud-right">
+            <div class="gear-console">
+              <div class="gear-console-head">
+                <span class="gear-console-title">GEARBOX</span>
+                <span id="gear-console-tag" class="gear-console-tag">MANUAL · Q/E · 1–5</span>
+              </div>
+              <div class="gear-h" id="gear-box">
+                <button class="g-p" data-gear="P"><b>P</b><small>PARK</small></button>
+                <button class="g-1 active" data-gear="1"><b>1</b><small>0–32</small></button>
+                <button class="g-3" data-gear="3"><b>3</b><small>–79</small></button>
+                <button class="g-5" data-gear="5"><b>5</b><small>–115</small></button>
+                <button class="g-n" data-gear="N"><b>N</b><small>NEUT</small></button>
+                <button class="g-2" data-gear="2"><b>2</b><small>–54</small></button>
+                <button class="g-4" data-gear="4"><b>4</b><small>–100</small></button>
+                <button class="g-r" data-gear="R"><b>R</b><small>REV</small></button>
+                <div class="gear-h-gate" aria-hidden="true">
+                  <i class="rail hv"></i><i class="rail v1"></i><i class="rail v2"></i><i class="rail v3"></i>
+                  <span id="gear-knob" class="gear-knob" style="--col:2;--row:1"></span>
+                </div>
+              </div>
+            </div>
+            <div class="drive-mode">
+              <button id="btn-mode-manual" class="mode-btn active" type="button">MANUAL</button>
+              <button id="btn-mode-auto" class="mode-btn" type="button">AUTO</button>
+            </div>
+            <div id="auto-status" class="auto-status"></div>
+            <div id="jev-panel" class="jev-panel hidden">
+              <div class="jev-head">
+                <span class="jev-title">JEV BRAIN</span>
+                <button id="btn-jev-trust" class="jev-trust-btn" type="button" title="Click to cycle trust mode">FOLLOW</button>
+              </div>
+              <div id="jev-link" class="jev-link">connecting…</div>
+              <div id="jev-now" class="jev-now"></div>
+              <div id="jev-score" class="jev-score"></div>
+              <ol id="jev-log" class="jev-log"></ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard">
+          <div class="dash-bezel">
+            <div class="pedals">
+              <button id="pedal-brake" class="pedal brake">
+                <span class="pedal-icon">■</span>
+                <span>BRAKE</span>
+              </button>
+              <button id="pedal-gas" class="pedal gas">
+                <span class="pedal-icon">▲</span>
+                <span>GAS</span>
+              </button>
+            </div>
+            <div class="dash-center">
+              <div class="dash-lights">
+                <span id="blink-left" class="blinker">◀</span>
+                <span id="light-status" class="light-status">—</span>
+                <span id="blink-right" class="blinker">▶</span>
+              </div>
+              <div id="status-msg"></div>
+              <p class="hint-keys">↑ gas · ←→ steer · ↓ brake · drag wheel</p>
+            </div>
+            <div class="speedo">
+              <div class="speedo-ring">
+                <span id="speed">0</span>
+                <small>km/h</small>
+                <span id="gear-readout" class="gear-readout">1</span>
+              </div>
+            </div>
+            <div class="wheel-wrap">
+              <div id="steering-wheel">
+                <div class="wheel-ring">
+                  <div class="wheel-hub"></div>
+                  <div class="wheel-spoke s1"></div>
+                  <div class="wheel-spoke s2"></div>
+                  <div class="wheel-spoke s3"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parked: brief success, then result card -->
+      <div id="parked-banner" class="parked-banner hidden">
+        <div class="parked-check">✔</div>
+        <div class="parked-text">
+          <h3 id="parked-title">ARRIVED</h3>
+          <p id="parked-detail">You reached the destination area</p>
+        </div>
+      </div>
+
+      <!-- Crash / win -->
+      <div id="result" class="overlay hidden">
+        <div class="menu-card">
+          <h2 id="result-title">CRASH!</h2>
+          <p id="result-detail"></p>
+          <button id="btn-restart" class="primary-btn">TRY AGAIN</button>
+          <button id="btn-menu" class="ghost-btn">MENU</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "jev_drive",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "auto:server": "cd Automation && .\\venv\\Scripts\\python.exe -m uvicorn server:app --host 127.0.0.1 --port 8787 --reload"
+  },
+  "devDependencies": {
+    "@types/three": "^0.186.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  },
+  "dependencies": {
+    "three": "^0.186.1"
+  }
+}
