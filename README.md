@@ -6,19 +6,17 @@ Switch to **AUTO** and the car drives itself: turn direction, pace (`go` / `craw
 
 ## Demo
 
-<!-- GIF autoplays in GitHub README (no click / no download) -->
+<!-- Full ~1:40 AUTO recording — GIF autoplays inline on GitHub (no click / no download) -->
 <p align="center">
-  <img src="docs/demo.gif" alt="JevDrive AUTO mode demo" width="100%" />
+  <img src="docs/demo.gif" alt="JevDrive full AUTO mode demo (~1:40)" width="100%" />
 </p>
 
-<!-- Full ~1:40 recording — muted autoplay + loop when the page supports it -->
-<p align="center">
-  <video src="docs/demo.mp4" width="100%" controls autoplay muted loop playsinline>
-    <a href="docs/demo.mp4">Watch the full demo</a>
-  </video>
-</p>
+**Full demo (~1:40)** — also as MP4: [`docs/demo.mp4`](https://github.com/durgaramakrishnakapa/JevDrive/raw/main/docs/demo.mp4)
 
-> AUTO on · Jev brain live on the HUD · full clip in `docs/demo.mp4` (~1:40)
+<video src="https://github.com/durgaramakrishnakapa/JevDrive/raw/main/docs/demo.mp4" width="100%" controls muted playsinline>
+</video>
+
+> AUTO on · Jev brain live on the HUD · full ~1:40 drive
 
 ## What this explores
 
