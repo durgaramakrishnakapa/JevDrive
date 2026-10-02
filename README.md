@@ -88,6 +88,4 @@ jev_drive/
 - `Automation/.env` is gitignored — use `.env.example` as a template.
 - Named destinations prefer **Market** and **Railway Station** more often; hospital is never the mission goal.
 
-## License
 
-Personal / demo project — use and adapt as you like.
